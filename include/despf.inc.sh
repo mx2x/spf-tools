@@ -231,7 +231,7 @@ numlesseq() {
 }
 
 checkval6() {
-  myip=$(canon6 $1) || return 1
+  myip=$(expand6 $1) || return 1
   cidr=${2#/}
   test -n "$cidr" && { numlesseq $cidr 128 || return 1; }
 
@@ -244,7 +244,7 @@ checkval6() {
   done
 }
 
-canon6() {
+expand6() {
   D=$(echo $1 | grep -Eo ':' | wc -l)
   if
     test $D -eq 7
