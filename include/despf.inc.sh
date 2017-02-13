@@ -64,6 +64,8 @@ findns() {
 printip() {
   while read line
   do
+    qualifier=$(echo $line | grep -Eio "^[\~\?\+\-]")
+    line=$(echo $line | sed -e 's/[\~\?\+\-]//')
     prefix=/${1:-"${line##*/}"}
     test -n "$1" || echo $line | grep -q '/' || prefix=""
     line=$(echo $line | cut -d/ -f1)
@@ -74,7 +76,7 @@ printip() {
     else
       continue
     fi
-    echo "ip${ver}:${line}${prefix}"
+    echo "${qualifier}ip${ver}:${line}${prefix}"
   done
 }
 
@@ -186,8 +188,8 @@ despf() {
     && getem $myloop $dogetem
   dogetamx=$(echo $myspf | grep -Eio -w '(mx|a)((\/|:)[^[:blank:]]+)?')  \
     && getamx $host $dogetamx
-  echo $myspf | grep -Eio 'ip[46]:[^[:blank:]]+' | cut -d: -f2- | printip
-  echo $myspf | grep -Eio '(exists|ptr):[^[:blank:]]+'
+  echo $myspf | grep -Eio '[\?\~\+\-]?ip[46]:[^[:blank:]]+' | sed -e 's/ip[46]\://' | printip
+  echo $myspf | grep -Eio '([\?\~\+\-]?exists|ptr):[^[:blank:]]+'
   set -e
 }
 
