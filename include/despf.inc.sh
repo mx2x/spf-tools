@@ -207,7 +207,7 @@ despfit() {
   for host in $hosts
   do
     despf $host $myloop
-  done | sort -u
+  done | $DESPF_SORT_BIN
 }
 
 checkval4() {

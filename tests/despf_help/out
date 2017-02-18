@@ -7,3 +7,4 @@ Available options:
                              without decomposition
   -t N                       set DNS timeout to N seconds
   -h                         display this help and exit
+  -u                         unordered output

@@ -45,16 +45,19 @@ usage() {
 	                             without decomposition
 	  -t N                       set DNS timeout to N seconds
 	  -h                         display this help and exit
+	  -u                         unordered output
 	EOF
     exit 1
 }
 
+DESPF_SORT_BIN="sort -u"
 domain=${DOMAIN:-'spf-orig.jasan.tk'}
 test -n "$domain" -o "$#" -gt 0 || usage
-while getopts "t:s:h-" opt; do
+while getopts "ut:s:h-" opt; do
   case $opt in
     t) test -n "$OPTARG" && DNS_TIMEOUT=$OPTARG;;
     s) test -n "$OPTARG" && DESPF_SKIP_DOMAINS=$OPTARG;;
+    u) DESPF_SORT_BIN="cat";;
     *) usage;;
   esac
 done
